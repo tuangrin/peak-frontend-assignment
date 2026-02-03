@@ -121,5 +121,5 @@ npm install
 npm run dev
 ```
 
-Web Application จะ run อยู่ที่ http://localhost:5173/
+Web Application จะ run อยู่ที่ http://localhost:8080/
 
