@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { productServices } from '@/services/productService'
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import type { ProductType } from '../../types'
 import { useProduct } from '@/stores/product'
 const productStore = useProduct()
@@ -38,6 +38,8 @@ const paginatedProducts = computed(() => {
   const start = (currentPage.value - 1) * limit
   return filteredProducts.value.slice(start, start + limit)
 })
+
+const firstRecord = computed(() => (currentPage.value - 1) * limit)
 
 let debounceTimeout: ReturnType<typeof setTimeout> | null = null
 
@@ -111,6 +113,13 @@ const tagOptions = computed(() => {
   return [...new Set(tags)]
 })
 
+watch(filteredProducts, (products) => {
+  const maxPage = Math.max(1, Math.ceil(products.length / limit))
+
+  if (currentPage.value > maxPage) {
+    currentPage.value = 1
+  }
+})
 
 const goToDetailPage = (prod: ProductType) => {
   router.push(`/products/${prod.id}`)
@@ -193,7 +202,12 @@ onMounted(() => {
             </div>
           </div>
 
-          <Paginator :rows="limit" :totalRecords="filteredProducts.length" @page="updatePage" />
+          <Paginator
+            :first="firstRecord"
+            :rows="limit"
+            :totalRecords="filteredProducts.length"
+            @page="updatePage"
+          />
         </div>
 
         <div v-else class="flex flex-col items-center justify-center h-64 gap-5 text-slate-500">
