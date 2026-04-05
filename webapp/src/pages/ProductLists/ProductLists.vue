@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { productServices } from '@/services/productService'
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, watch } from 'vue'
 import type { ProductType } from '../../types'
 import { useProduct } from '@/stores/product'
 const productStore = useProduct()
@@ -124,10 +123,6 @@ watch(filteredProducts, (products) => {
 const goToDetailPage = (prod: ProductType) => {
   router.push(`/products/${prod.id}`)
 }
-
-onMounted(() => {
-  // getProductLists()
-})
 </script>
 
 <template>
@@ -181,7 +176,7 @@ onMounted(() => {
                   @click="goToDetailPage(product)">
                   {{ product.title }}
                 </p>
-                <p class="text-slate-400 text-xs line-clamp-2">
+                <p class="text-slate-400 text-xs line-clamp-2" :title="product.description">
                   {{ product.description }}
                 </p>
                 <div class="mt-auto flex justify-between items-center">
