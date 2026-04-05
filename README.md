@@ -123,3 +123,6 @@ npm run dev
 
 Web Application จะ run อยู่ที่ http://localhost:8080/
 
+
+### หน้าที่เพิ่มเข้ามา
+/home คือหน้า Welcome
